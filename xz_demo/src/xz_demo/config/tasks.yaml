@@ -1,0 +1,249 @@
+define_vision_task:
+  description: >
+    Establish the product vision and define the roadmap for turning {idea} into a working prototype.
+    Conduct market research, analyze competitors, and identify the unique value proposition.
+    Outline key features and functionalities that should be prioritized for the Minimum Viable Product (MVP).
+    Provide an estimated timeline for development. Note the current year is 2025.
+    Perform adequete research, identify gaps in the market, evaluate whether the idea is valid and worth building, include what paid features the current companies are charging
+  expected_output: >
+    A well-structured product roadmap detailing:
+      - Market research insights.
+      - Product vision and user needs.
+      - Prioritized features and an estimated development timeline.
+  agent: product_manager
+
+mvp_feature_task:
+  description: >
+    Define the core features required for MVP for {idea}, vision and roadmap specified in `outputs/vision_and_roadmap.md`
+    Ensure these features align with the product vision and user needs.
+    This list will guide the UX Designer in user journey mapping and the Software Engineer in MVP development.
+  expected_output: >
+    A structured MVP feature list, clearly detailing:
+      - Essential functionalities for the first prototype.
+      - Feature priorities and dependencies.
+      - Notes for UX/UI designers and developers.
+  agent: product_manager
+
+user_flow_task:
+  description: >
+    Define the end-to-end user journey for {idea}, MVP feature list specified in `outputs/mvp_feature_list.md`
+    Identify user entry points, navigation patterns, and interaction flows.
+    Ensure a seamless and intuitive experience by aligning the flow with user expectations.
+  expected_output: >
+    A complete user flow document llustrating key touchpoints and interactions.
+    Includes annotations explaining each step in the user journey.
+  agent: ux_ui_designer
+
+# mvp_task:
+#   description: >
+#     Develop a fully functional MVP based on the specifications outlined in `outputs/mvp_feature_list.md`.
+
+#     Step 1: Develop the MVP
+#     - Generate all required code files and configurations necessary to run a complete MVP.
+#     - Ensure the project structure follows best practices for maintainability and scalability.
+#     - Frontend (React/Next.js): Create pages, reusable components, and global styles. Ensure a responsive UI.
+#     - Backend (Node.js + Express/NestJS): Implement API endpoints, authentication, and business logic.
+#     - Database: Set up database models, migrations, and seed data.
+#     - Environment Configuration: Create `.env` files with necessary variables.
+#     - Docker: Provide a `docker-compose.yml` file for seamless local setup.
+#     - Always save each file created with the `SaveCodeFileTool` in the correct directory structure
+
+#     Step 2: Ensure Quality
+#     - Implement unit tests and integration tests for both frontend and backend using Jest or a suitable framework.
+#     - Ensure TypeScript configurations (`tsconfig.json`) are correct and linting is enforced.
+#     - Validate that all dependencies in `package.json` are installed correctly.
+
+#     Step 3: Documentation
+#     - Generate a detailed `README.md` explaining how to install, configure, and run the MVP locally, it must include the specified directory structure.
+#     - Include API documentation (`docs/api.md`) detailing endpoints, request/response formats, and example calls.
+#     - Ensure `.gitignore` is configured correctly to avoid committing sensitive files.
+#   expected_output: >
+#     Files containing necessary code and documentation for running the MVP, must follow the following structure:
+
+#     ├── /frontend      # Frontend application (React/Next.js)
+#     │    ├── /components  # Reusable UI components (buttons, modals, etc.)
+#     │    ├── /pages       # Next.js pages (acts as routes)
+#     │    ├── /styles      # Global styles (CSS, Tailwind, or Styled Components)
+#     │    ├── package.json # Dependencies and scripts for the frontend
+#     │    ├── tsconfig.json # TypeScript configuration for the frontend
+#     |    ├── Dockerfile # frontend Dockerfile
+#     │
+#     ├── /backend       # Backend application (Node.js + Express/NestJS)
+#     │    ├── /src       # Main source folder for backend code
+#     │    │    ├── /routes   # API endpoints and route handlers
+#     │    │    ├── /models   # Database models
+#     │    │    ├── /services # Business logic and helper functions
+#     │    ├── .env       # Environment variables (API keys, database URLs, secrets)
+#     │    ├── package.json # Dependencies and scripts for the backend, ensure all nece
+#     │    ├── tsconfig.json # TypeScript configuration for the backend
+#     |    ├── Dockerfile # backend Dockerfile
+#     │
+#     ├── /database      # Database setup (SQL or NoSQL schemas, migrations, seed data)
+#     ├── docker-compose.yml  # Docker configuration for database, backend, and frontend
+#     ├── .gitignore     # Specifies which files and folders Git should ignore
+#     ├── README.md      # A very detailed and clear documentation for setting up and running the project
+
+#   agent: software_engineer
+
+mvp_think_and_plan_task:
+  description: >
+    Before implementing the MVP, create a structured development plan.
+
+    - Read `outputs/mvp_feature_list.md` to understand the requirements.
+    - Examine the expected project structure.
+    - List all files that need to be created under `backend/` and `frontend/`.
+    - Describe the purpose and expected content of each file.
+    - Identify dependencies and configurations required.
+    - Save the plan in `outputs/mvp_build_plan.md`.
+
+  expected_output: >
+    A document named `outputs/mvp_build_plan.md` containing:
+    - A list of all required files categorized by backend and frontend.
+    - Descriptions of what each file will contain.
+    - Any dependencies, frameworks, or libraries that need to be installed.
+    - Any special configurations (e.g., TypeScript, linting, environment variables).
+
+  agent: software_engineer
+
+backend_build_task:
+  description: >
+    Implement the backend based on the `outputs/mvp_build_plan.md` and save every file with `SaveCodeFileTool`.
+
+    - Read `outputs/mvp_build_plan.md` for guidance.
+    - Create and organize files in the `backend/` directory.
+    - Implement API endpoints under `backend/src/routes/`.
+    - Define models in `backend/src/models/` for database operations.
+    - Implement business logic under `backend/src/services/`.
+    - Ensure necessary dependencies are installed via `package.json`.
+    - Configure `backend/.env` with required environment variables.
+    - Provide a working `backend/Dockerfile` for containerization.
+
+  expected_output: >
+    - All necessary backend files and folders as per `mvp_build_plan.md`.
+    - A functional backend API with a properly structured codebase.
+    - A configured database connection and `.env` file.
+    - A working `Dockerfile` for the backend.
+
+  agent: software_engineer
+
+frontend_build_task:
+  description: >
+    Implement the frontend based on `outputs/mvp_build_plan.md` and save every file with `SaveCodeFileTool`.
+
+    - Read `outputs/mvp_build_plan.md` to understand frontend requirements.
+    - Create Next.js/React components under `frontend/components/`.
+    - Build frontend pages under `frontend/pages/`.
+    - Apply global styles in `frontend/styles/`.
+    - Set up API calls to communicate with the backend.
+    - Ensure necessary dependencies are installed via `frontend/package.json`.
+    - Provide a working `frontend/Dockerfile` for containerization.
+
+  expected_output: >
+    - All frontend files saved in `output/mvp/` as per `outputs/mvp_build_plan.md`.
+    - A functional frontend that integrates with the backend.
+    - A properly structured component-based UI.
+    - A configured `.env` file for frontend settings.
+    - A working `Dockerfile` for the frontend.
+
+  agent: software_engineer
+
+compile_and_document_task:
+  description: >
+    Look at the `outputs/mvp_build_plan.md` and contents in `outputs/`,
+    - create a `outputs/mvp/docker-compose.yml`  (Docker configuration for integrating backend with frontend)
+    - create a `outputs/mvp/README.md` (A very detailed and clear documentation for setting up and running the project)
+  expected_output: >
+    - a `docker-compose.yml`  (Docker configuration for integrating backend with frontend)
+    - a `README.md` (A very detailed and clear documentation for setting up and running the project)
+
+  agent: software_engineer
+
+qa_review_task:
+  description: >
+    Review the MVP implementation to ensure it is fully functional and meets the required specifications.
+
+    Step 1: kill all ports 
+    - run `kill -9 $(lsof -ti:3000) $(lsof -ti:5000)` with `Run Command` tool
+
+    Step 2: Verify Compilation & Dependencies
+    - Read the generated `outputs/mvp/backend/package.json` files to ensure required dependencies are listed.
+    - Read the generated `outputs/mvp/frontend/package.json` files to ensure required dependencies are listed.
+    - Read the genearted `outputs/mvp/README.md` doc to understand how everything works
+    - Follow the README.md, use `Run Command` tool to:
+      - Install dependencies (e.g. `npm install`)
+      - Run the frontend (e.g. `npm run dev`)
+      - Run the backend (e.g. `npm run start`)
+      - Check for errors or warnings.
+
+    Step 2: Functional API Testing
+    - Use `API Test` tool to check API responses from the backend.  
+    - Ensure all critical routes return expected results. 
+    - If all tests pass, write "MVP Approved" in the QA report and stop.
+    - If any issues are found, document them and stop.
+
+    Step 3: Generate a QA Report
+    - Save the findings using `SaveCodeFileTool`.  
+    - List all errors and improvement suggestions for the Software Engineer.
+
+    Do not repeat the review. Once the report is generated, the task is complete.
+  expected_output: >
+    A structured QA report with:
+    - Compilation and execution errors (if any)
+    - API test results
+    - Missing dependencies or misconfigurations
+    - Suggestions for improvement
+    - ✅ If no issues remain, include "MVP Approved" to signal completion.
+  agent: qa_engineer
+
+improve_mvp_task:
+  description: >
+    Improve the MVP based on the latest QA feedback. Follow these steps:
+    1. Read the QA Report in `outputs/qa_review.md`
+    2. Fix reported issues by going over line to line, and fix the relevant files in `outputs/mvp/`
+    3. Save Updated Code: Use `SaveCodeFileTool` to persist the revised MVP.
+    4. Improve documentation in `outputs/mvp/README.md` and other necessary places
+    5. Output a docoument detailing the improvements made in `outputs/mvp_improvement_log.md`
+    🚨 Once revisions are complete, notify the QA Engineer for a re-test.
+  expected_output: >
+    - A fixed and re-tested MVP that resolves all QA-reported issues.
+    - A detailed update on what was fixed.
+  agent: software_engineer
+# task_allocation_task:
+#   description: >
+#     Break down the overall product development into smaller, manageable tasks.
+#     Assign tasks to the relevant team members based on expertise.
+#     Ensure efficient resource allocation and a realistic development timeline.
+#   expected_output: >
+#     A detailed task breakdown with assigned responsibilities.
+#     A Gantt chart or Kanban-style task list mapping out development phases and resource allocation.
+#   agent: product_manager
+
+# wireframe_prototype_task:
+#   description: >
+#     Create wireframes and prototypes for the {idea} based on the defined user flow.
+#     Develop low-fidelity sketches followed by high-fidelity interactive prototypes.
+#     Ensure the design aligns with brand identity and accessibility standards.
+#   expected_output: >
+#     A set of low-fidelity wireframes covering key screens and UI elements.
+#     A clickable high-fidelity prototype demonstrating user interactions.
+#   agent: ux_ui_designer
+
+# database_task:
+#   description: >
+#     Design and configure the database schema for {idea}.
+#     Define data models, relationships, and indexing strategies to ensure efficiency.
+#     Implement security best practices, including access control and data encryption.
+#   expected_output: >
+#     A well-structured database schema with tables, relationships, and constraints.
+#     Database configuration scripts ready for deployment.
+#   agent: software_engineer
+
+# deployment_task:
+#   description: >
+#     Deploy the {idea} prototype to a test environment for quality assurance and validation.
+#     Set up CI/CD pipelines for automated builds and deployments.
+#     Ensure the deployed environment is stable, scalable, and accessible to testers.
+#   expected_output: >
+#     A fully deployed test environment with the latest prototype version.
+#     CI/CD setup documentation and deployment logs.
+#   agent: software_engineer
